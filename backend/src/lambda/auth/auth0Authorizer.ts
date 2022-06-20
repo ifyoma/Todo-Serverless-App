@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
 // import 'source-map-support/register'
 
@@ -8,12 +9,28 @@
 // import { JwtPayload } from '../../auth/JwtPayload'
 
 // const logger = createLogger('auth')
+=======
+import { CustomAuthorizerResult, CustomAuthorizerEvent } from 'aws-lambda'
+import 'source-map-support/register'
+
+import {
+  // verify,
+  decode
+} from 'jsonwebtoken'
+import { createLogger } from '../../utils/logger'
+// import Axios from 'axios'
+import { Jwt } from '../../auth/Jwt'
+import { JwtPayload } from '../../auth/JwtPayload'
+
+const logger = createLogger('auth')
+>>>>>>> ffbfed2fed5fb91967b7690261dd38e5e6d9ce5c
 
 // // TODO: Provide a URL that can be used to download a certificate that can be used
 // // to verify JWT token signature.
 // // To get this URL you need to go to an Auth0 page -> Show Advanced Settings -> Endpoints -> JSON Web Key Set
 // const jwksUrl = '...'
 
+<<<<<<< HEAD
 // export const handler = async (
 //   event: CustomAuthorizerEvent
 // ): Promise<CustomAuthorizerResult> => {
@@ -79,6 +96,13 @@
 import { APIGatewayAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
 
 export const handler = async (event: APIGatewayAuthorizerEvent): Promise<CustomAuthorizerResult> => {
+=======
+export const handler = async (
+  event: CustomAuthorizerEvent
+): Promise<CustomAuthorizerResult> => {
+  logger.info('Authorizing a user', event.authorizationToken)
+
+>>>>>>> ffbfed2fed5fb91967b7690261dd38e5e6d9ce5c
   try {
     // const jwtToken = await verifyToken(event.authorizationToken)
     // logger.info('User was authorized', jwtToken)
@@ -86,6 +110,7 @@ export const handler = async (event: APIGatewayAuthorizerEvent): Promise<CustomA
     getToken(event)
     console.log("User was authorized!");
 
+    // Return IAM policy specifying the user's permissions
     return {
       // principalId: jwtToken.sub,
       principalId: 'user',
@@ -103,6 +128,7 @@ export const handler = async (event: APIGatewayAuthorizerEvent): Promise<CustomA
   } catch (e) {
     // logger.error('User not authorized', { error: e.message })
 
+    // Deny the user access to resources
     return {
       principalId: 'user',
       policyDocument: {
@@ -119,9 +145,17 @@ export const handler = async (event: APIGatewayAuthorizerEvent): Promise<CustomA
   }
 }
 
+<<<<<<< HEAD
 // async function verifyToken(authHeader: string): Promise<JwtPayload> {
 //   const token = getToken(authHeader)
 //   const jwt: Jwt = decode(token, { complete: true }) as Jwt
+=======
+async function verifyToken(authHeader: string): Promise<JwtPayload> {
+  const token = getToken(authHeader)
+  const jwt: Jwt = decode(token, { complete: true }) as Jwt
+  console.log(jwt);
+
+>>>>>>> ffbfed2fed5fb91967b7690261dd38e5e6d9ce5c
 
 //     // TODO: Implement token verification
 //     // You should implement it similarly to how it was implemented for the exercise for the lesson 5
