@@ -14,7 +14,9 @@ const todosTable = process.env.TODOS_TABLE
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     // Write your code here
-    console.log("Processing event: ", event);
+    // const userId = getUserId(event)
+    console.log("Processing event", event);
+
 
     const todos = await docClient.scan({
       TableName: todosTable
