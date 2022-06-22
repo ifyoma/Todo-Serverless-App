@@ -1,16 +1,14 @@
 import { APIGatewayAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda'
 import 'source-map-support/register'
-
-import {
-  // verify,
-  decode
-} from 'jsonwebtoken'
+import { verify, decode } from 'jsonwebtoken'
 import { createLogger } from '../../utils/logger'
-// import Axios from 'axios'
 import { Jwt } from '../../auth/Jwt'
 import { JwtPayload } from '../../auth/JwtPayload'
 
+// import Axios from 'axios'
+
 const logger = createLogger('auth')
+const auth0Secret = 'cFjrmHHOL9PXLfbYLKm2_eO2NDW8cb8KZPySrELdRW-XYg0wPLX2rQ_UCGhU7qRB'
 
 // // TODO: Provide a URL that can be used to download a certificate that can be used
 // // to verify JWT token signature.
@@ -61,12 +59,10 @@ async function verifyToken(event: APIGatewayAuthorizerEvent): Promise<JwtPayload
   const jwt: Jwt = decode(token, { complete: true }) as Jwt
   console.log(jwt);
 
-
-
   // TODO: Implement token verification
   // You should implement it similarly to how it was implemented for the exercise for the lesson 5
   // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
-  return undefined
+  return verify(token, auth0Secret) as JwtPayload
 }
 
 
