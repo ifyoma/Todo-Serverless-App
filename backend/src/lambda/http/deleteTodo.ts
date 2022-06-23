@@ -1,32 +1,30 @@
 import 'source-map-support/register'
-
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-import * as middy from 'middy'
-// import * as AWS from 'aws-sdk'
-import { cors, httpErrorHandler } from 'middy/middlewares'
+import { deleteTodo } from '../../helpers/todos'
+import { getUserId } from '../utils'
+import { createLogger } from '../../utils/logger'
 
-// import { deleteTodo } from '../../businessLogic/todos'
-// import { getUserId } from '../utils'
+/**
+ * Delete todo item function
+ */
 
-// const docClient = new AWS.DynamoDB.DocumentClient()
-// const todosTable = process.env.TODOS_TABLE
+const logger = createLogger('DeleteTodo')
 
-export const handler = middy(
-  async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    // const todoId = event.pathParameters.todoId
+export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  logger.info('Deleting todo item: ', { event })
 
-    console.log("Processing event: ", event);
+  const userId = getUserId(event)
+  const todoId = event.pathParameters.todoId
 
-    // TODO: Remove a TODO item by id
+  await deleteTodo(userId, todoId)
 
-    return undefined
-  }
-)
-
-handler
-  .use(httpErrorHandler())
-  .use(
-    cors({
-      credentials: true
+  return {
+    statusCode: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify({
+      message: `Todo item ${todoId} was deleted successfully!`
     })
-  )
+  }
+}
