@@ -25,6 +25,7 @@ provider:
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
     ATTACHMENT_S3_BUCKET: todo-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    AUTH0_JWKS_URL: https://dev-silasjimmy.us.auth0.com/.well-known/jwks.json
 
   logs:
     restApi: true
@@ -52,12 +53,12 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
-    # iamRoleStatementsInherit: true
-    # iamRoleStatements:
-    #   - Effect: Allow
-    #     Action:
-    #       - dynamodb:Scan
-    #     Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.TODOS_TABLE}
+    iamRoleStatementsInherit: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.TODOS_TABLE}
 
   # TODO: Configure this function -
   # Provide iamRoleStatements property. Decide the Actions and AWS Resource.
@@ -98,7 +99,7 @@ functions:
     # iamRoleStatements:
     #   - Effect: Allow
     #     Action:
-    #       - dynamodb:PutItem
+    #       - dynamodb:UpdateItem
     #     Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.TODOS_TABLE}
 
   # TODO: Configure this function
