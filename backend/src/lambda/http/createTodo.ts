@@ -5,10 +5,13 @@ import { getUserId } from '../utils';
 import { createTodo } from '../../helpers/todos'
 import { createLogger } from '../../utils/logger';
 
+/**
+ * Create todo item function
+ */
+
 const logger = createLogger('CreateTodo')
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  // TODO: Implement creating a new TODO item
   logger.info('Creating a todo item: ', { event })
 
   const userId = getUserId(event)

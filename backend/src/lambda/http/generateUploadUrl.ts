@@ -5,12 +5,15 @@ import { getUserId } from '../utils'
 import { createLogger } from '../../utils/logger'
 import * as uuid from 'uuid'
 
+/**
+ * Update attachemnt URL function
+ */
+
 const logger = createLogger('GenerateUploadUrl')
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   logger.info('Generating upload url: ', { event })
 
-  // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
   const userId = getUserId(event)
   const todoId = event.pathParameters.todoId
   const attachmentId = uuid.v4()

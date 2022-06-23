@@ -5,6 +5,10 @@ import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
 import { getUserId } from '../utils'
 import { createLogger } from '../../utils/logger'
 
+/**
+ * Update todo item function
+ */
+
 const logger = createLogger('UpdateTodo')
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {

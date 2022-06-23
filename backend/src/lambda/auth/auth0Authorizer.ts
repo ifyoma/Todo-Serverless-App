@@ -5,10 +5,11 @@ import { createLogger } from '../../utils/logger'
 import { JwtPayload } from '../../auth/JwtPayload'
 import Axios from 'axios'
 
+/**
+ * API Gateway authorizer
+ */
+
 const logger = createLogger('auth')
-// TODO: Provide a URL that can be used to download a certificate that can be used
-// to verify JWT token signature.
-// To get this URL you need to go to an Auth0 page -> Show Advanced Settings -> Endpoints -> JSON Web Key Set
 const jwksUrl = process.env.AUTH0_JWKS_URL
 let cachedCert: string
 
@@ -57,12 +58,8 @@ async function verifyToken(event: APIGatewayAuthorizerEvent): Promise<JwtPayload
 
   logger.info(`Verifying token ${token}`)
 
-  // TODO: Implement token verification
-  // You should implement it similarly to how it was implemented for the exercise for the lesson 5
-  // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
   return verify(token, cert, { algorithms: ['RS256'] }) as JwtPayload
 }
-
 
 function getToken(event: APIGatewayAuthorizerEvent): string {
   if (!event.type || event.type !== 'TOKEN')
@@ -107,14 +104,14 @@ async function getCert(): Promise<string> {
   const key = signingKeys[0]
   const publicKey = key.x5c[0]
 
-  cachedCert = certToPEM(publicKey)
+  cachedCert = createCert(publicKey)
 
   logger.info('Valid certificate found', cachedCert)
 
   return cachedCert
 }
 
-function certToPEM(cert: string): string {
+function createCert(cert: string): string {
   cert = cert.match(/.{1,64}/g).join('\n')
   cert = `-----BEGIN CERTIFICATE-----\n${cert}\n-----END CERTIFICATE-----\n`
   return cert

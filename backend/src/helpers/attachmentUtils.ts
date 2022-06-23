@@ -4,8 +4,9 @@ import 'source-map-support/register'
 
 const XAWS = AWSXRay.captureAWS(AWS)
 
-// TODO: Implement the fileStogare logic
-
+/**
+ * File storage logic
+ */
 export class AttachmentUtils {
 
     constructor(
@@ -24,6 +25,7 @@ export class AttachmentUtils {
             Key: attachmentId,
             Expires: parseInt(this.urlExpiration)
         })
+
         return uploadUrl
     }
 
